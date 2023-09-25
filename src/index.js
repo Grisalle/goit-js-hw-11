@@ -29,6 +29,9 @@ searchFormEl.addEventListener('submit', async event => {
 loadMoreBtnEl.addEventListener('click', () => {
   page += 1;
   searchImages();
+  setTimeout(() => {
+    smoothScrollGallery();
+  }, 1000);
 });
 
 async function searchImages() {
@@ -72,4 +75,13 @@ async function searchImages() {
   } catch (error) {
       Notiflix.Notify.failure("An error occurred while fetching data. Please try again later.");
   }
+};
+
+function smoothScrollGallery() {
+  const { height } = galleryEl.firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: height * 2,
+    behavior: 'smooth',
+  });
 };
