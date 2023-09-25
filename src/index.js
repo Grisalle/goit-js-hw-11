@@ -68,8 +68,17 @@ async function searchImages() {
     } else {
         Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
         loadMoreBtnEl.style.display = 'none';
+        window.removeEventListener('scroll', handleScroll);
     }
   } catch (error) {
       Notiflix.Notify.failure("An error occurred while fetching data. Please try again later.");
   }
 };
+
+function infiniteScroll() {
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
+    searchImages();
+  }
+}
+
+window.addEventListener('scroll', infiniteScroll);
