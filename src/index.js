@@ -1,3 +1,4 @@
+import axios from "axios";
 import Notiflix from "notiflix";
 const API_KEY = "39589884-40cfc9e6470c89d61febbc7ff";
 
@@ -12,6 +13,7 @@ const perPage = 40;
 searchFormEl.addEventListener('submit', async event => {
   event.preventDefault();
   searchQuery = event.target.searchQuery.value.trim();
+  page = 1;
   galleryEl.innerHTML = '';
   loadMoreBtnEl.style.display = 'none';
   searchImages();
@@ -25,8 +27,8 @@ loadMoreBtnEl.addEventListener('click', () => {
 async function searchImages() {
   const apiUrl = `https://pixabay.com/api/?key=${API_KEY}&q=${searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`;
   try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
+    const response = await axios.get(apiUrl);
+    const data = response.data;
 
       if (data.hits.length === 0) {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
