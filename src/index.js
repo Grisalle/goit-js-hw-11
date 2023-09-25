@@ -1,6 +1,13 @@
 import axios from "axios";
 import Notiflix from "notiflix";
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 const API_KEY = "39589884-40cfc9e6470c89d61febbc7ff";
+
+const lightbox = new SimpleLightbox(".gallery a", {
+  captionsData: "alt",
+  captionDelay: 250,
+});
 
 const searchFormEl = document.querySelector(".search-form");
 const galleryEl = document.querySelector(".gallery");
@@ -41,7 +48,9 @@ async function searchImages() {
       const photoCard = document.createElement('div');
       photoCard.classList.add('photo-card');
       photoCard.innerHTML = `
-                <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
+                <a href="${image.largeImageURL}" data-lightbox="image">
+                  <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
+                </a>
                 <div class="info">
                     <p class="info-item"><b>Likes</b> ${image.likes}</p>
                     <p class="info-item"><b>Views</b> ${image.views}</p>
@@ -50,6 +59,8 @@ async function searchImages() {
                 </div>
             `;
       galleryEl.appendChild(photoCard);
+
+      lightbox.refresh();
     });
 
     if (data.totalHits > page * perPage) {
